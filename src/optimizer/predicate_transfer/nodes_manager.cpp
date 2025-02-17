@@ -30,6 +30,7 @@ idx_t NodesManager::GetTableIndexinFilter(LogicalOperator *op) {
 	}
 }
 
+// ColumnBinding canonicalization: Find the equivalent ColumnBinding?
 ColumnBinding NodesManager::FindRename(ColumnBinding col) {
 	auto itr = rename_cols.find(col);
 	ColumnBinding res = col;

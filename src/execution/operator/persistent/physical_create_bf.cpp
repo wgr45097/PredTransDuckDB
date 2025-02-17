@@ -556,8 +556,23 @@ SourceResultType PhysicalCreateBF::GetData(ExecutionContext &context, DataChunk 
 	return SourceResultType::HAVE_MORE_OUTPUT;
 }
 
+static std::string toHexString(long int number) {
+    std::stringstream ss;
+    ss << std::hex << number;
+    return ss.str();
+}
+
 string PhysicalCreateBF::ParamsToString() const {
 	string result;
+	auto bf = bf_to_create[0];
+	result += toHexString((long)bf.get()) + " ";
+	// result += to_string(bf->BoundColsBuilt.size()) + " " + to_string(bf->column_bindings_built_.size()) + " ";
+	// for (auto binding : bf->BoundColsBuilt) {
+	// 	result += to_string(binding) + " ";
+	// }
+	for (auto binding : bf->column_bindings_built_) {
+		result += binding.ToString() + " ";
+	}
 	return result;
 }
 

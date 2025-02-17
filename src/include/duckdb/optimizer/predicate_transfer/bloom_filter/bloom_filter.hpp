@@ -14,6 +14,7 @@
 #include "duckdb/planner/column_binding.hpp"
 #include "duckdb/common/types/selection_vector.hpp"
 #include "duckdb/optimizer/predicate_transfer/bloom_filter/partition_util.hpp"
+#include "duckdb/common/string.hpp"
 
 namespace duckdb {
 
@@ -200,6 +201,10 @@ public:
   
   // The columns build this BF
   vector<ColumnBinding> column_bindings_built_;
+
+  vector<string> ColsAppliedNames;
+
+  vector<string> ColsBuiltNames;
 
   vector<idx_t> BoundColsApplied;
 

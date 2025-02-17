@@ -5,6 +5,7 @@
 #include "duckdb/planner/expression/bound_conjunction_expression.hpp"
 #include "duckdb/transaction/transaction.hpp"
 
+#include <string>
 #include <utility>
 
 namespace duckdb {
@@ -103,27 +104,30 @@ string PhysicalTableScan::ParamsToString() const {
 	string result;
 	if (function.to_string) {
 		result = function.to_string(bind_data.get());
+		result += "\ncolumn_ids.size()=" + std::to_string(column_ids.size());
+		result += "\nprojection.size()=" + std::to_string(projection_ids.size());
+		result += "\nnames.size()=" + std::to_string(names.size());
 		result += "\n[INFOSEPARATOR]\n";
 	}
 	if (function.projection_pushdown) {
 		if (function.filter_prune) {
+			result += "column_ids[projection_ids[i]]:\n";
 			for (idx_t i = 0; i < projection_ids.size(); i++) {
 				const auto &column_id = column_ids[projection_ids[i]];
+				result += std::to_string(column_id) + ":";
 				if (column_id < names.size()) {
-					if (i > 0) {
-						result += "\n";
-					}
 					result += names[column_id];
+					result += "\n";
 				}
 			}
 		} else {
+			result += "column_ids[i]:\n";
 			for (idx_t i = 0; i < column_ids.size(); i++) {
 				const auto &column_id = column_ids[i];
+				result += std::to_string(column_id) + ":";
 				if (column_id < names.size()) {
-					if (i > 0) {
-						result += "\n";
-					}
 					result += names[column_id];
+					result += "\n";
 				}
 			}
 		}
